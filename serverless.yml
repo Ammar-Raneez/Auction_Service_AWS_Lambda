@@ -21,3 +21,9 @@ functions:
       - http:
         method: GET
         path: /hello
+
+# custom variables that are not a part of the main sls framework
+# this tells the serverless-bundle plugin to not perform linting
+# custom:
+#   bundle:
+#     linting: false
