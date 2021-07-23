@@ -42,6 +42,14 @@ functions:
           method: POST
           path: /auction
 
+  getAuctions:
+    name: getAuctions-${opt:stage}
+    handler: src/handlers/getAuctions.handler
+    events:
+      - http:
+          method: GET
+          path: /auctions
+
 # custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
   # this tells the serverless-bundle plugin to not perform linting

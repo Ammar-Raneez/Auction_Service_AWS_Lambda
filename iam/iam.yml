@@ -3,6 +3,7 @@ AuctionsTableIAM:
   Effect: Allow
   Action:
     - dynamodb:PutItem
+    - dynamodb:Scan
   Resource:
     #{AWS::Region} will be filled in by the pseudo-parameters
     - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.DB_NAME}
