@@ -1,0 +1,8 @@
+# Will hold all IAM related configurations --> syntax required for cloud formation
+AuctionsTableIAM:
+  Effect: Allow
+  Action:
+    - dynamodb:PutItem
+  Resource:
+    #{AWS::Region} will be filled in by the pseudo-parameters
+    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/AuctionsTable-${self:provider.stage}

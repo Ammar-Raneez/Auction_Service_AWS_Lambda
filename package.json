@@ -10,7 +10,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "aws-sdk": "^2.952.0",
         "serverless-offline": "^7.0.0",
-        "serverless-pseudo-parameters": "^2.6.0"
+        "serverless-pseudo-parameters": "^2.6.0",
+        "uuid": "^8.3.2"
     }
 }

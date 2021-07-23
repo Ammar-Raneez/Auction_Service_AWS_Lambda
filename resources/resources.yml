@@ -1,0 +1,18 @@
+# Will hold all resource related configurations
+
+AuctionsTable:
+  # type of dynamodb table
+  Type: AWS::DynamoDB::Table
+  # props of that table
+  Properties:
+    TableName: AuctionsTable-${self:provider.stage}
+    BillingMode: PAY_PER_REQUEST
+    # is an array of attribute objects
+    AttributeDefinitions:
+      # specific attribute object
+      - AttributeName: id
+        AttributeType: S
+    # make the attribute id our partition/primary key
+    KeySchema:
+      - AttributeName: id
+        KeyType: HASH

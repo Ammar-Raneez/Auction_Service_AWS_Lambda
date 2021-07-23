@@ -4,19 +4,30 @@ frameworkVersion: '2'
 
 plugins:
   # - serverless-bundle
-  - serverless-pseudo-parameters
+  - serverless-pseudo-parameters # parameter references for aws stuff
   - serverless-offline
 
 provider:
   name: aws
-  runtime: nodejs12.x
   lambdaHashingVersion: 20201221
   stage: ${opt:stage, 'dev'}
+  environment: ${file(serverless.env.yml):${opt:stage}}
+  runtime: nodejs12.x
   region: us-east-1
+  iamRoleStatements:
+    - ${file(iam/iam.yml):AuctionsTableIAM}
+
+# extra resources created using cloud formation
+resources:
+  Resources:
+    # the specific resource's id - must be unique
+    AuctionsTable: ${file(resources/resources.yml):AuctionsTable}
+
 
 functions:
   # test function
   hello:
+    name: hello-${opt:stage}
     handler: src/handlers/hello.handler
     events:
       - http:
@@ -24,6 +35,7 @@ functions:
           path: /hello
 
   createAuction:
+    name: createAuction-${opt:stage}
     handler: src/handlers/createAuction.handler
     events:
       - http:

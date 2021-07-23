@@ -1,12 +1,22 @@
-const createAuction = (event, context, callback) => {
+const { v4 } = require('uuid');
+const AWS = require('aws-sdk');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+
+const createAuction = async(event, context, callback) => {
     const { title } = JSON.parse(event.body);
     const currentTime = new Date();
 
     const auction = {
+        id: v4(),
         title,
         status: 'OPEN',
         createdAt: currentTime.toISOString()
     }
+
+    await dynamoDB.put({
+        TableName: 'AuctionsTable',
+        Item: auction
+    }).promise();
 
     const response = {
         statusCode: 201,
@@ -17,4 +27,4 @@ const createAuction = (event, context, callback) => {
     callback(null, response);
 }
 
-module.export.handler = createAuction;
+module.exports.handler = createAuction;
