@@ -58,6 +58,15 @@ functions:
           method: GET
           path: /auction/{id}
 
+  placeBid:
+    name: placeBid-${opt:stage}
+    handler: src/handlers/placeBid.handler
+    events:
+      - http:
+        # post used to create, patch to update an auction
+          method: PATCH
+          path: /auction/{id}/bid
+
 # custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
   # this tells the serverless-bundle plugin to not perform linting

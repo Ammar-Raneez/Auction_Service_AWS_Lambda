@@ -14,7 +14,11 @@ const createAuction = async(event, context, callback) => {
         id: v4(),
         title,
         status: 'OPEN',
-        createdAt: currentTime.toISOString()
+        createdAt: currentTime.toISOString(),
+        // current highest bid of this auction
+        highestBid: {
+            amount: 0
+        }
     }
 
     try {
@@ -37,4 +41,4 @@ const createAuction = async(event, context, callback) => {
     return response;
 }
 
-module.exports.handler = customMiddleware(createAuction)
+module.exports.handler = customMiddleware.handler(createAuction)

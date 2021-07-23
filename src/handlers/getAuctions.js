@@ -26,4 +26,4 @@ const getAuctions = async(event, context, callback) => {
     return response;
 }
 
-module.exports.handler = customMiddleware(getAuctions)
+module.exports.handler = customMiddleware.handler(getAuctions)
