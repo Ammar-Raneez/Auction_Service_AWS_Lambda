@@ -11,7 +11,7 @@ provider:
   name: aws
   lambdaHashingVersion: 20201221
   stage: ${opt:stage, 'dev'}
-  environment: ${file(serverless.env.yml):${opt:stage}}
+  environment: ${file(serverless.env.yml):${opt:stage, self:provider.stage}}
   runtime: nodejs12.x
   region: us-east-1
   iamRoleStatements:
@@ -42,8 +42,8 @@ functions:
           method: POST
           path: /auction
 
-# custom variables that are not a part of the main sls framework
-# this tells the serverless-bundle plugin to not perform linting
+# custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
+  # this tells the serverless-bundle plugin to not perform linting
   bundle:
     linting: false

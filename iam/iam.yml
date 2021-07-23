@@ -5,4 +5,4 @@ AuctionsTableIAM:
     - dynamodb:PutItem
   Resource:
     #{AWS::Region} will be filled in by the pseudo-parameters
-    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/AuctionsTable-${self:provider.stage}
+    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.DB_NAME}

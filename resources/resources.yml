@@ -5,11 +5,11 @@ AuctionsTable:
   Type: AWS::DynamoDB::Table
   # props of that table
   Properties:
-    TableName: AuctionsTable-${self:provider.stage}
+    TableName: ${self:provider.environment.DB_NAME}
     BillingMode: PAY_PER_REQUEST
     # is an array of attribute objects
     AttributeDefinitions:
-      # specific attribute object of type string in this case
+      # specific attribute object of type string in this
       - AttributeName: id
         AttributeType: S
     # make the attribute id our partition/primary key
