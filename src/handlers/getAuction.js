@@ -4,9 +4,8 @@ const customMiddleware = require('../../lib/customMiddleware');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-const getAuction = async(event, context, callback) => {
+module.exports.getAuctionById = async(id) => {
     let auction;
-    const { id } = event.pathParameters;
 
     try {
         const result = await dynamoDB.get({
@@ -19,6 +18,13 @@ const getAuction = async(event, context, callback) => {
         console.error(err);
         throw new createError.InternalServerError(err);
     }
+
+    return auction;
+}
+
+const getAuction = async(event, context, callback) => {
+    const { id } = event.pathParameters;
+    let auction = await this.getAuctionById(id);
 
     if (!auction) {
         throw new createError.NotFound(`Auction with ${id} not found`)

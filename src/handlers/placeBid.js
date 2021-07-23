@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const createError = require('http-errors');
 const customMiddleware = require('../../lib/customMiddleware');
+const { getAuctionById } = require('./getAuction');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
@@ -8,6 +9,16 @@ const placeBid = async(event, context, callback) => {
     const { id } = event.pathParameters;
     // bid amount
     const { amount } = event.body;
+
+    const auction = await getAuctionById(id);
+
+    if (!auction) {
+        throw new createError.NotFound(`Auction with ${id} not found`)
+    }
+
+    if (amount <= auction.highestBid.amount) {
+        throw new createError.Forbidden(`Cannot place a bid that is less than the current bid - ${auction.highestBid.amount}`);
+    }
 
     const params = {
         TableName: process.env.DB_NAME,
