@@ -1,9 +1,6 @@
 const { v4 } = require('uuid');
 const AWS = require('aws-sdk');
-const middy = require('@middy/core');
-const httpJsonBodyParser = require('@middy/http-json-body-parser');
-const httpEventNormalizer = require('@middy/http-event-normalizer');
-const httpErrorHandler = require('@middy/http-error-handler');
+const customMiddleware = require('../../lib/customMiddleware');
 // create our own errors
 const createError = require('http-errors');
 
@@ -40,7 +37,4 @@ const createAuction = async(event, context, callback) => {
     return response;
 }
 
-module.exports.handler = middy(createAuction)
-    .use(httpJsonBodyParser()) // automatically parsers the stringified body
-    .use(httpEventNormalizer()) // automatically adjust the event object, to stop us from accessing non-existent attributes, saving room for errors
-    .use(httpErrorHandler()) // make error handling smooth easy n clean
+module.exports.handler = customMiddleware(createAuction)

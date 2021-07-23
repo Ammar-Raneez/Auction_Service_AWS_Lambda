@@ -1,8 +1,5 @@
 const AWS = require('aws-sdk');
-const middy = require('@middy/core');
-const httpJsonBodyParser = require('@middy/http-json-body-parser');
-const httpEventNormalizer = require('@middy/http-event-normalizer');
-const httpErrorHandler = require('@middy/http-error-handler');
+const customMiddleware = require('../../lib/customMiddleware');
 const createError = require('http-errors');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
@@ -29,7 +26,4 @@ const getAuctions = async(event, context, callback) => {
     return response;
 }
 
-module.exports.handler = middy(getAuctions)
-    .use(httpJsonBodyParser())
-    .use(httpEventNormalizer())
-    .use(httpErrorHandler())
+module.exports.handler = customMiddleware(getAuctions)
