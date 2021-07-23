@@ -14,7 +14,7 @@ const createAuction = async(event, context, callback) => {
     }
 
     await dynamoDB.put({
-        TableName: 'AuctionsTable',
+        TableName: 'AuctionsTable-dev',
         Item: auction
     }).promise();
 

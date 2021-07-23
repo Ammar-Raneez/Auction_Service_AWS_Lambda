@@ -9,7 +9,7 @@ AuctionsTable:
     BillingMode: PAY_PER_REQUEST
     # is an array of attribute objects
     AttributeDefinitions:
-      # specific attribute object
+      # specific attribute object of type string in this case
       - AttributeName: id
         AttributeType: S
     # make the attribute id our partition/primary key
