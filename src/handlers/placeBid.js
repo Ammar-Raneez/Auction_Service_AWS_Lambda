@@ -5,6 +5,13 @@ const { getAuctionById } = require('./getAuction');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
+/**
+ * Places a bid on a specified auction
+ * @param {*} event 
+ * @param {*} context 
+ * @param {*} callback 
+ * @returns the updated auction
+ */
 const placeBid = async(event, context, callback) => {
     const { id } = event.pathParameters;
     // bid amount

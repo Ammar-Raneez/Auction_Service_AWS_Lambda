@@ -4,6 +4,11 @@ const customMiddleware = require('../../lib/customMiddleware');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
+/**
+ * Return a specific auction based on id
+ * @param {*} id which auction to return
+ * @returns the specified auction
+ */
 module.exports.getAuctionById = async(id) => {
     let auction;
 
@@ -22,6 +27,13 @@ module.exports.getAuctionById = async(id) => {
     return auction;
 }
 
+/**
+ * Get a specific auction
+ * @param {*} event 
+ * @param {*} context 
+ * @param {*} callback 
+ * @returns specific auction based on id
+ */
 const getAuction = async(event, context, callback) => {
     const { id } = event.pathParameters;
     let auction = await this.getAuctionById(id);
