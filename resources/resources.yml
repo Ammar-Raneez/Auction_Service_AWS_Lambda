@@ -3,16 +3,41 @@
 AuctionsTable:
   # type of dynamodb table
   Type: AWS::DynamoDB::Table
+
   # props of that table
   Properties:
     TableName: ${self:provider.environment.DB_NAME}
     BillingMode: PAY_PER_REQUEST
-    # is an array of attribute objects
+
+    # is an array of attribute objects, that MUST be present for each item
+    # id, status, and endAt date must be specified for each item, in this case
     AttributeDefinitions:
       # specific attribute object of type string in this
       - AttributeName: id
         AttributeType: S
+      - AttributeName: status
+        AttributeType: S
+      - AttributeName: endAt
+        AttributeType: S
+
     # make the attribute id our partition/primary key
     KeySchema:
       - AttributeName: id
-        KeyType: HASH
+        KeyType: HASH # --> means primary/partition
+
+    # secondary indexes makes querying the db easier
+    # can specify other keys other than primary key
+    # global secondary index is one w a primary n sort key that can be different from table
+    # we can now query the db based on this index
+    GlobalSecondaryIndexes:
+      - IndexName: statusAndEndDate
+        KeySchema:
+          # gonna use status as the partition key
+          - AttributeName: status
+            KeyType: HASH
+          # sort and filter based on the ending date
+          - AttributeName:  endAt
+            KeyType: RANGE
+        # keep all of the defined attributes in this
+        Projection:
+          ProjectionType: ALL
