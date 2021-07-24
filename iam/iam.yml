@@ -1,4 +1,4 @@
-# Will hold all IAM related configurations --> syntax required for cloud formation
+# Will hold all IAM related configurations
 AuctionsTableIAM:
   Effect: Allow
   Action:
@@ -6,6 +6,9 @@ AuctionsTableIAM:
     - dynamodb:Scan
     - dynamodb:GetItem
     - dynamodb:UpdateItem
+    - dynamodb:Query
   Resource:
     #{AWS::Region} will be filled in by the pseudo-parameters
     - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.DB_NAME}
+    # GSI's create sort of a secondary virtua table, and therefore have their own arn, so we should declare that as well
+    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.DB_NAME}/index/statusAndEndDate
