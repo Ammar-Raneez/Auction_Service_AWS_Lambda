@@ -1,8 +1,6 @@
 const { v4 } = require('uuid');
 const AWS = require('aws-sdk');
 const customMiddleware = require('../../lib/customMiddleware');
-const validator = require('@middy/validator');
-const { createAuctionSchema } = require('../../lib/schemas/createAuctionSchema');
 // create our own errors
 const createError = require('http-errors');
 
@@ -55,6 +53,3 @@ const createAuction = async(event, context, callback) => {
 }
 
 module.exports.handler = customMiddleware.handler(createAuction)
-    .use(validator({
-        inputSchema: createAuctionSchema
-    }))
