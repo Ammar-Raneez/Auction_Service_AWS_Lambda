@@ -13,7 +13,11 @@ const placeBid = async(event, context, callback) => {
     const auction = await getAuctionById(id);
 
     if (!auction) {
-        throw new createError.NotFound(`Auction with ${id} not found`)
+        throw new createError.NotFound(`Auction with ${id} not found`);
+    }
+
+    if (auction.status === 'CLOSED') {
+        throw new createError.Forbidden('You cannot bid on CLOSED auctions');
     }
 
     if (amount <= auction.highestBid.amount) {
