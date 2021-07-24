@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
 const createError = require('http-errors');
 const customMiddleware = require('../../lib/customMiddleware');
+const validator = require('@middy/validator');
+const { createAuctionSchema } = require('../../lib/schemas/placeBidSchema');
 const { getAuctionById } = require('./getAuction');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
@@ -62,3 +64,6 @@ const placeBid = async(event, context, callback) => {
 }
 
 module.exports.handler = customMiddleware.handler(placeBid)
+    .use(validator({
+        inputSchema: createAuctionSchema
+    }))
