@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const customMiddleware = require('../../lib/customMiddleware');
 const validator = require('@middy/validator');
-const getAuctionsSchema = require('../../lib/schemas/getAuctionsSchema');
+const { getAuctionsSchema } = require('../../lib/schemas/getAuctionsSchema');
 const createError = require('http-errors');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
