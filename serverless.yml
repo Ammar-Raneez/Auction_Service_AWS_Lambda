@@ -67,6 +67,13 @@ functions:
           method: PATCH
           path: /auction/{id}/bid
 
+  processAuctions:
+    name: processAuctions-${opt:stage}
+    handler: src/handlers/processAuctions.handler
+    # schedule an event to run every minute
+    # events:
+    #   - schedule: rate(1 minute)
+
 # custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
   # this tells the serverless-bundle plugin to not perform linting
