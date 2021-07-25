@@ -15,6 +15,8 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
  */
 const createAuction = async(event, context, callback) => {
     const { title } = event.body;
+    // the authorizer object has all username email stuff, sent from our Authorization service claims
+    const { email } = event.requestContext.authorizer;
     const currentTime = new Date();
     const endDate = new Date();
     // auction lasts for 1 hour
@@ -29,7 +31,8 @@ const createAuction = async(event, context, callback) => {
         // current highest bid of this auction
         highestBid: {
             amount: 0
-        }
+        },
+        seller: email
     }
 
     try {

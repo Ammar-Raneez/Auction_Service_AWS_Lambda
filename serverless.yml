@@ -33,6 +33,7 @@ functions:
       - http:
           method: GET
           path: /hello
+          authorizer: ${self:custom.authorizer}
 
   createAuction:
     name: createAuction-${opt:stage}
@@ -41,6 +42,7 @@ functions:
       - http:
           method: POST
           path: /auction
+          authorizer: ${self:custom.authorizer}
 
   getAuctions:
     name: getAuctions-${opt:stage}
@@ -49,6 +51,7 @@ functions:
       - http:
           method: GET
           path: /auctions
+          authorizer: ${self:custom.authorizer}
 
   getAuction:
     name: getAuction-${opt:stage}
@@ -57,6 +60,7 @@ functions:
       - http:
           method: GET
           path: /auction/{id}
+          authorizer: ${self:custom.authorizer}
 
   placeBid:
     name: placeBid-${opt:stage}
@@ -66,6 +70,7 @@ functions:
         # post used to create, patch to update an auction
           method: PATCH
           path: /auction/{id}/bid
+          authorizer: ${self:custom.authorizer}
 
   processAuctions:
     name: processAuctions-${opt:stage}
@@ -79,3 +84,4 @@ custom:
   # this tells the serverless-bundle plugin to not perform linting
   bundle:
     linting: false
+  authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authentication-service-${opt:stage}-auth
