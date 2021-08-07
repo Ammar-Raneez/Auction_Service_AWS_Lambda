@@ -1,0 +1,66 @@
+service: authentication-service
+
+frameworkVersion: '2'
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment: 
+    AUTH0_PUBLIC_KEY: ${file(secret.pem)}
+
+functions:
+  # the authorizer lambda
+  auth:
+    handler: src/handlers/auth.handler
+
+  # a dummy public endpoint
+  publicEndpoint:
+    name: public-endpoint-${opt:stage}
+    handler: src/handlers/public.handler
+    events:
+      - http:
+          path: public
+          method: POST
+          cors: true
+
+  # a dummy private endpoint that requires authorization
+  privateEndpoint:
+    name: private-endpoint-${opt:stage}
+    handler: src/handlers/private.handler
+    events:
+      - http:
+          path: private
+          method: POST
+          authorizer: auth
+          cors: true
+
+resources:
+  Resources:
+    # custom errors required to handle 401 unauthorized cases.
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+
+    AuthFailureGatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'

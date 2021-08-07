@@ -33,7 +33,8 @@ functions:
       - http:
           method: GET
           path: /hello
-          authorizer: ${self:custom.authorizer}
+          # authorizer: ${self:custom.authorizer}
+          cors: true
 
   createAuction:
     name: createAuction-${opt:stage}
@@ -42,7 +43,8 @@ functions:
       - http:
           method: POST
           path: /auction
-          authorizer: ${self:custom.authorizer}
+          # authorizer: ${self:custom.authorizer}
+          cors: true
 
   getAuctions:
     name: getAuctions-${opt:stage}
@@ -51,7 +53,8 @@ functions:
       - http:
           method: GET
           path: /auctions
-          authorizer: ${self:custom.authorizer}
+          # authorizer: ${self:custom.authorizer}
+          cors: true
 
   getAuction:
     name: getAuction-${opt:stage}
@@ -60,7 +63,8 @@ functions:
       - http:
           method: GET
           path: /auction/{id}
-          authorizer: ${self:custom.authorizer}
+          # authorizer: ${self:custom.authorizer}
+          cors: true
 
   placeBid:
     name: placeBid-${opt:stage}
@@ -70,7 +74,8 @@ functions:
         # post used to create, patch to update an auction
           method: PATCH
           path: /auction/{id}/bid
-          authorizer: ${self:custom.authorizer}
+          # authorizer: ${self:custom.authorizer}
+          cors: true
 
   processAuctions:
     name: processAuctions-${opt:stage}
