@@ -26,7 +26,7 @@ const generatePolicy = (principalId, methodArn) => {
     };
 }
 
-module.exports.handler = (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
     // no authorization token
     if (!event.authorizationToken) {
         throw 'Unauthorized';

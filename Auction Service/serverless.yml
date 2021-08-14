@@ -3,7 +3,6 @@ service: auction-service
 frameworkVersion: '2'
 
 plugins:
-  # - serverless-bundle
   - serverless-pseudo-parameters # parameter references for aws stuff
   - serverless-offline
 
@@ -33,7 +32,7 @@ functions:
       - http:
           method: GET
           path: /hello
-          # authorizer: ${self:custom.authorizer}
+          authorizer: ${self:custom.authorizer}
           cors: true
 
   createAuction:
@@ -43,7 +42,7 @@ functions:
       - http:
           method: POST
           path: /auction
-          # authorizer: ${self:custom.authorizer}
+          authorizer: ${self:custom.authorizer}
           cors: true
 
   getAuctions:
@@ -53,7 +52,7 @@ functions:
       - http:
           method: GET
           path: /auctions
-          # authorizer: ${self:custom.authorizer}
+          authorizer: ${self:custom.authorizer}
           cors: true
 
   getAuction:
@@ -63,7 +62,7 @@ functions:
       - http:
           method: GET
           path: /auction/{id}
-          # authorizer: ${self:custom.authorizer}
+          authorizer: ${self:custom.authorizer}
           cors: true
 
   placeBid:
@@ -74,7 +73,7 @@ functions:
         # post used to create, patch to update an auction
           method: PATCH
           path: /auction/{id}/bid
-          # authorizer: ${self:custom.authorizer}
+          authorizer: ${self:custom.authorizer}
           cors: true
 
   processAuctions:
@@ -86,7 +85,4 @@ functions:
 
 # custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
-  # this tells the serverless-bundle plugin to not perform linting
-  bundle:
-    linting: false
   authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authentication-service-${opt:stage}-auth
