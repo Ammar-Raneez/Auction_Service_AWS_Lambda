@@ -13,7 +13,8 @@ provider:
   region: us-east-1
   stage: ${opt:stage, 'dev'}
   iamRoleStatements:
-    - ${file(iam/sendMailIAM.yml):SendMailIAM}
+    - ${file(iam/SendMailIAM.yml):SendMailIAM}
+    - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
 
 resources:
   Resources:
