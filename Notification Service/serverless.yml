@@ -18,6 +18,9 @@ provider:
 resources:
   Resources:
     MailQueue: ${file(resources/mailQueue.yml):MailQueue}
+  Outputs:
+    MailQueueArn: ${file(resources/mailQueue.yml):Outputs.MailQueueArn}
+    MailQueueUrl: ${file(resources/mailQueue.yml):Outputs.MailQueueUrl}
 
 functions:
   hello:
@@ -41,4 +44,5 @@ functions:
 custom:
   mailQueue:
     name: MailQueue-${self:provider.stage}
-    arn: putMailQueueArnHere
+    arn: putMailQueueArnHere (!GetAtt MailQueue.Arn)
+    url: putMailQueueClientURL (!Ref MailQueue)
