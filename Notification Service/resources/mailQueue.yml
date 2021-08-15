@@ -7,8 +7,8 @@ Outputs:
   MailQueueArn:
     Value: ${self:custom.MailQueue.arn}
     Export:
-      name: ${self:custom.MailQueue.name}-Arn
+      Name: ${self:custom.MailQueue.name}-Arn
   MailQueueUrl:
     Value: ${self:custom.MailQueue.url}
     Export:
-      name: ${self:custom.MailQueue.name}-Url
+      Name: ${self:custom.MailQueue.name}-Url

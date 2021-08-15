@@ -64,3 +64,13 @@ resources:
         RestApiId:
           Ref: 'ApiGatewayRestApi'
         StatusCode: '401'
+
+  Outputs:
+    AuthorizerArn: ${self:custom.Outputs.AuthorizerArn}
+
+custom:
+  Outputs:
+    AuthorizerArn:
+      Value: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authentication-service-${opt:stage}-auth
+      Export:
+        Name: Authorizer-${self:provider.stage}-Arn 

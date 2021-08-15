@@ -15,7 +15,7 @@ provider:
   region: us-east-1
   iamRoleStatements:
     - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
-    - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
+    # - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
 
 # extra resources created using cloud formation
 resources:
@@ -86,8 +86,8 @@ functions:
 
 # custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
-  authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authentication-service-${opt:stage}-auth
   # importing the cloud formation variables that were exported in notifications service
-  MailQueue:
-    arn: ${cf:notification-service-${self:provider.stage}.MailQueueArn}
-    url: ${cf:notification-service-${self:provider.stage}.MailQueueUrl}
+  authorizer: ${cf:authentication-service-${self:provider.stage}.AuthorizerArn}
+  # MailQueue:
+  #   arn: ${cf:notification-service-${self:provider.stage}.MailQueueArn}
+  #   url: ${cf:notification-service-${self:provider.stage}.MailQueueUrl}
