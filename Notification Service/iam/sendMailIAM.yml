@@ -1,0 +1,6 @@
+# IAM Permissions For Sending E-mails
+SendMailIAM:
+  Effect: Allow
+  Action:
+    - ses:SendMail
+  Resource: arn:aws:ses:*

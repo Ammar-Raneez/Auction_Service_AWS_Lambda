@@ -12,6 +12,8 @@ provider:
   lambdaHashingVersion: 20201221
   region: us-east-1
   stage: ${opt:stage, 'dev'}
+  iamRoleStatements:
+    - ${file(iam/sendMailIAM.yml):SendMailIAM}
 
 functions:
   hello:
@@ -21,3 +23,7 @@ functions:
       - http:
           method: GET
           path: /hello
+
+  sendEmail:
+    name: notification-service-sendMail-${self:provider.stage}
+    handler: src/handlers/sendMail.handler
