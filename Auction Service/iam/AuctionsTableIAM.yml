@@ -1,4 +1,3 @@
-# Will hold all IAM related configurations
 AuctionsTableIAM:
   Effect: Allow
   Action:

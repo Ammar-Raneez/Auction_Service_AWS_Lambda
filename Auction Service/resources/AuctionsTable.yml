@@ -1,5 +1,3 @@
-# Will hold all resource related configurations
-
 AuctionsTable:
   # type of dynamodb table
   Type: AWS::DynamoDB::Table

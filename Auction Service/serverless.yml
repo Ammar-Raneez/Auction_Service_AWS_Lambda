@@ -14,13 +14,14 @@ provider:
   runtime: nodejs12.x
   region: us-east-1
   iamRoleStatements:
-    - ${file(iam/iam.yml):AuctionsTableIAM}
+    - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
+    - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
 
 # extra resources created using cloud formation
 resources:
   Resources:
     # the specific resource's id - must be unique
-    AuctionsTable: ${file(resources/resources.yml):AuctionsTable}
+    AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}
 
 
 functions:
@@ -86,3 +87,7 @@ functions:
 # custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
   authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authentication-service-${opt:stage}-auth
+  # importing the cloud formation variables that were exported in notifications service
+  MailQueue:
+    arn: ${cf:notification-service-${self:provider.stage}.MailQueueArn}
+    url: ${cf:notification-service-${self:provider.stage}.MailQueueUrl}

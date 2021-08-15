@@ -17,10 +17,10 @@ provider:
 
 resources:
   Resources:
-    MailQueue: ${file(resources/mailQueue.yml):MailQueue}
+    MailQueue: ${file(resources/MailQueue.yml):MailQueue}
   Outputs:
-    MailQueueArn: ${file(resources/mailQueue.yml):Outputs.MailQueueArn}
-    MailQueueUrl: ${file(resources/mailQueue.yml):Outputs.MailQueueUrl}
+    MailQueueArn: ${file(resources/MailQueue.yml):Outputs.MailQueueArn}
+    MailQueueUrl: ${file(resources/MailQueue.yml):Outputs.MailQueueUrl}
 
 functions:
   hello:
@@ -37,12 +37,12 @@ functions:
     # our sendMail function is to be triggered using sqs
     events:
       - sqs:
-          arn: ${self:custom.mailQueue.arn}
+          arn: ${self:custom.MailQueue.arn}
           # number of messages to process at a time
           batchSize: 1
 
 custom:
-  mailQueue:
+  MailQueue:
     name: MailQueue-${self:provider.stage}
     arn: putMailQueueArnHere (!GetAtt MailQueue.Arn)
     url: putMailQueueClientURL (!Ref MailQueue)

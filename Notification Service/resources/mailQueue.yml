@@ -1,14 +1,14 @@
 MailQueue:
   Type: AWS::SQS::Queue
   Properties:
-    QueueName: ${self:custom.mailQueue.name}
+    QueueName: ${self:custom.MailQueue.name}
 
 Outputs:
   MailQueueArn:
-    Value: ${self:custom.mailQueue.arn}
+    Value: ${self:custom.MailQueue.arn}
     Export:
-      name: ${self:custom.mailQueue.name}-Arn
+      name: ${self:custom.MailQueue.name}-Arn
   MailQueueUrl:
-    Value: ${self:custom.mailQueue.url}
+    Value: ${self:custom.MailQueue.url}
     Export:
-      name: ${self:custom.mailQueue.name}-Url
+      name: ${self:custom.MailQueue.name}-Url
