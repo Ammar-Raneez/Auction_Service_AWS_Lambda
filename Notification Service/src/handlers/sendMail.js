@@ -6,22 +6,28 @@ const ses = new AWS.SES({
 })
 
 module.exports.handler = async (event) => {
+    // there's only a single record due to batch size of 1
+    const record = event.Records[0];
+
+    const email = JSON.parse(record.body);
+    const { subject, body, recipient } = email;
+
     const params = {
         // the email that is verified in SES
         Source: 'ammarraneez@gmail.com',
         Destination: {
             // array of recipients
-            ToAddresses: ['ammarraneez@gmail.com']
+            ToAddresses: [recipient]
         },
         Message: {
             Body: {
                 // html can also be used for body
                 Text: {
-                    Data: 'Hello :)'
+                    Data: body
                 }
             },
             Subject: {
-                Data: 'Test Mail!'
+                Data: subject
             }
         }
     }

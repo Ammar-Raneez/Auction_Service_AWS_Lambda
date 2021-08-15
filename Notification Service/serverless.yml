@@ -15,6 +15,10 @@ provider:
   iamRoleStatements:
     - ${file(iam/sendMailIAM.yml):SendMailIAM}
 
+resources:
+  Resources:
+    MailQueue: ${file(resources/mailQueue.yml):MailQueue}
+
 functions:
   hello:
     name: notification-service-hello-${self:provider.stage}
@@ -27,3 +31,14 @@ functions:
   sendEmail:
     name: notification-service-sendMail-${self:provider.stage}
     handler: src/handlers/sendMail.handler
+    # our sendMail function is to be triggered using sqs
+    events:
+      - sqs:
+          arn: ${self:custom.mailQueue.arn}
+          # number of messages to process at a time
+          batchSize: 1
+
+custom:
+  mailQueue:
+    name: MailQueue-${self:provider.stage}
+    arn: putMailQueueArnHere
