@@ -18,6 +18,8 @@ provider:
 resources:
   Resources:
     MailQueue: ${file(resources/MailQueue.yml):MailQueue}
+
+  # Export MailQueue content here so we can access in from another stack
   Outputs:
     MailQueueArn: ${file(resources/MailQueue.yml):Outputs.MailQueueArn}
     MailQueueUrl: ${file(resources/MailQueue.yml):Outputs.MailQueueUrl}
@@ -47,4 +49,6 @@ custom:
   MailQueue:
     name: MailQueue-${self:provider.stage}
     arn: !GetAtt MailQueue.Arn
+
+    # by default !Ref for MailQueues return the URL, so no need of !GetAtt
     url: !Ref MailQueue
