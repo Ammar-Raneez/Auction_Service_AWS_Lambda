@@ -1,7 +1,7 @@
 curl --location --request POST 'https://dev-serverless-auctionservice-ammar.us.auth0.com/oauth/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'client_id=K2SAydebEdyvevnlWsCGBJlxi15yE59a' \
---data-urlencode 'username=ammar@gmail.com' \
---data-urlencode 'password=Ammarraneez12' \
+--data-urlencode 'username=bidder@gmail.com' \
+--data-urlencode 'password=Provider12345' \
 --data-urlencode 'grant_type=password' \
 --data-urlencode 'scope=openid'

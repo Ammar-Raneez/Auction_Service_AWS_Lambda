@@ -1,5 +1,5 @@
 {
-    "name": "auction-service",
+    "name": "auction-auction-service",
     "version": "1.0.0",
     "description": "",
     "main": "handler.js",
@@ -17,8 +17,9 @@
         "@middy/validator": "^2.4.3",
         "aws-sdk": "^2.952.0",
         "http-errors": "^1.8.0",
-        "serverless-offline": "^7.0.0",
-        "serverless-pseudo-parameters": "^2.6.0",
         "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "serverless-offline": "^8.2.0"
     }
 }

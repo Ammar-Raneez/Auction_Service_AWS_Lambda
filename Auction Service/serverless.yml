@@ -1,9 +1,8 @@
-service: auction-service
+service: auction-auction-service
 
 frameworkVersion: '2'
 
 plugins:
-  - serverless-pseudo-parameters # parameter references for aws stuff
   - serverless-offline
 
 provider:
@@ -12,10 +11,10 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment: ${file(serverless.env.yml):${opt:stage, self:provider.stage}}
   runtime: nodejs12.x
-  region: us-east-1
+  region: eu-west-1
   iamRoleStatements:
     - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
-    # - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
+    - ${file(iam/MailQueueIAM.yml):MailQueueIAM}
 
 # extra resources created using cloud formation
 resources:
@@ -25,17 +24,6 @@ resources:
 
 
 functions:
-  # test function
-  hello:
-    name: hello-${opt:stage}
-    handler: src/handlers/hello.handler
-    events:
-      - http:
-          method: GET
-          path: /hello
-          authorizer: ${self:custom.authorizer}
-          cors: true
-
   createAuction:
     name: createAuction-${opt:stage}
     handler: src/handlers/createAuction.handler
@@ -80,6 +68,7 @@ functions:
   processAuctions:
     name: processAuctions-${opt:stage}
     handler: src/handlers/processAuctions.handler
+
     # schedule an event to run every minute
     # events:
     #   - schedule: rate(1 minute)
@@ -87,7 +76,7 @@ functions:
 # custom variables that are not a part of the main sls framework, we can define anything we want here
 custom:
   # importing the cloud formation variables that were exported in notifications service
-  authorizer: ${cf:authentication-service-${self:provider.stage}.AuthorizerArn}
-  # MailQueue:
-  #   arn: ${cf:notification-service-${self:provider.stage}.MailQueueArn}
-  #   url: ${cf:notification-service-${self:provider.stage}.MailQueueUrl}
+  authorizer: ${cf:auction-authentication-service-${self:provider.stage}.AuthorizerArn}
+  MailQueue:
+    arn: ${cf:auction-notification-service-${self:provider.stage}.MailQueueArn}
+    url: ${cf:auction-notification-service-${self:provider.stage}.MailQueueUrl}

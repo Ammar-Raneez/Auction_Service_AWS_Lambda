@@ -33,9 +33,11 @@ AuctionsTable:
           # gonna use status as the partition key
           - AttributeName: status
             KeyType: HASH
+
           # sort and filter based on the ending date
           - AttributeName:  endAt
             KeyType: RANGE
+
         # keep all of the defined attributes in this
         Projection:
           ProjectionType: ALL

@@ -1,18 +1,18 @@
 module.exports.createAuctionSchema = {
-    properties: {
-        body: {
-            type: 'object',
-            properties: {
-                title: {
-                    type: 'string'
-                }
-            },
-            required: [
-                'title'
-            ]
-        }
-    },
-    required: [
-        'body'
-    ]
+	properties: {
+		body: {
+			type: 'object',
+			properties: {
+				title: {
+					type: 'string',
+				},
+			},
+			required: [
+				'title',
+			],
+		},
+	},
+	required: [
+		'body',
+	],
 }

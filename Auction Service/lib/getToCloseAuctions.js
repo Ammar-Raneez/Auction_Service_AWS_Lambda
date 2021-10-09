@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk');
-
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 /**
@@ -7,23 +6,22 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
  * @returns - the auctions that must be closed
  */
 module.exports.getToCloseAuctions = async() => {
-    const now = new Date();
+	const now = new Date();
 
-    const params = {
-        TableName: process.env.DB_NAME,
-        IndexName: 'statusAndEndDate',
-        KeyConditionExpression: '#status = :status AND endAt <= :now',
-        ExpressionAttributeValues: {
-            ':status': 'OPEN',
-            ':now': now.toISOString()
-        },
-        ExpressionAttributeNames: {
-            '#status': 'status'
-        }
-    }
+	const params = {
+		TableName: process.env.DB_NAME,
+		IndexName: 'statusAndEndDate',
+		KeyConditionExpression: '#status = :status AND endAt <= :now',
+		ExpressionAttributeValues: {
+			':status': 'OPEN',
+			':now': now.toISOString(),
+		},
+		ExpressionAttributeNames: {
+			'#status': 'status',
+		},
+	};
 
-    // prefer query over scanning over all
-    const result = await dynamoDB.query(params).promise();
-
-    return result.Items;
+	// prefer query over scanning over all
+	const result = await dynamoDB.query(params).promise();
+	return result.Items;
 }

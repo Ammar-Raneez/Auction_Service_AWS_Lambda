@@ -7,7 +7,7 @@ AuctionsTableIAM:
     - dynamodb:UpdateItem
     - dynamodb:Query
   Resource:
-    #{AWS::Region} will be filled in by the pseudo-parameters
-    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.DB_NAME}
-    # GSI's create sort of a secondary virtua table, and therefore have their own arn, so we should declare that as well
-    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.DB_NAME}/index/statusAndEndDate
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:provider.environment.DB_NAME}
+
+    # GSI's create sort of a secondary virtual table, and therefore have their own arn, so we should declare that as well
+    - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:provider.environment.DB_NAME}/index/statusAndEndDate
