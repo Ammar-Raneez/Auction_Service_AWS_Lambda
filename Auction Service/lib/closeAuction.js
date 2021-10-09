@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const sqs = new AWS.SQS();
 
 /**
  * Closes a specific auction
@@ -25,6 +26,42 @@ module.exports.closeAuction = async(auction) => {
 		},
 	}
 
-	const result = await dynamoDB.update(params).promise();
-	return result;
+	await dynamoDB.update(params).promise();
+
+	const { title, seller, highestBid } = auction;
+	const { amount, bidder } = highestBid;
+
+	if (amount === 0) {
+		await sqs.sendMessage({
+			QueueUrl: process.env.MAIL_QUEUE_URL,
+			MessageBody: JSON.stringify({
+				subject: 'No bids on your auction item :(',
+				recipient: seller,
+				body: `Oh no! Your item "${title}" didn't get any bids. Better luck next time!`,
+			}),  
+		}).promise();
+		return;
+	}
+
+	// send messages to both seller and bidder
+	const notifySeller = sqs.sendMessage({
+		QueueUrl: process.env.MAIL_QUEUE_URL,
+		MessageBody: JSON.stringify({
+			subject: 'Your item has been sold',
+			recipient: seller,
+			body: `Wohoo! Your item ${title} has been sold for $${amount}`,
+		}),
+	}).promise();
+
+	const notifyBidder = sqs.sendMessage({
+		QueueUrl: process.env.MAIL_QUEUE_URL,
+		MessageBody: JSON.stringify({
+			subject: 'You won an auction!',
+			recipient: bidder,
+			body: `What a great deal! You got yourself a "${title}" for $${amount}`,
+		}),
+	}).promise();
+
+	// run both of these, order doesn't matter
+	return Promise.all([notifyBidder, notifySeller]);
 }
