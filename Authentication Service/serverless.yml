@@ -1,4 +1,4 @@
-service: authentication-service
+service: auction-authentication-service
 
 frameworkVersion: '2'
 
@@ -9,7 +9,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
-  region: us-east-1
+  region: eu-west-1
   stage: ${opt:stage, 'dev'}
   environment: 
     AUTH0_PUBLIC_KEY: ${file(secret.pem)}
@@ -71,6 +71,6 @@ resources:
 custom:
   Outputs:
     AuthorizerArn:
-      Value: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:authentication-service-${opt:stage}-auth
+      Value: arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${opt:stage}-auth
       Export:
         Name: Authorizer-${self:provider.stage}-Arn 
