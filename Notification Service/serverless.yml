@@ -1,16 +1,15 @@
-service: notification-service
+service: auction-notification-service
 
 frameworkVersion: '2'
 
 plugins:
-  - serverless-pseudo-parameters
   - serverless-offline
 
 provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
-  region: us-east-1
+  region: eu-west-1
   stage: ${opt:stage, 'dev'}
   iamRoleStatements:
     - ${file(iam/SendMailIAM.yml):SendMailIAM}
@@ -35,15 +34,17 @@ functions:
   sendEmail:
     name: notification-service-sendMail-${self:provider.stage}
     handler: src/handlers/sendMail.handler
+
     # our sendMail function is to be triggered using sqs
     events:
       - sqs:
           arn: ${self:custom.MailQueue.arn}
+
           # number of messages to process at a time
           batchSize: 1
 
 custom:
   MailQueue:
     name: MailQueue-${self:provider.stage}
-    arn: putMailQueueArnHere (!GetAtt MailQueue.Arn)
-    url: putMailQueueClientURL (!Ref MailQueue)
+    arn: !GetAtt MailQueue.Arn
+    url: !Ref MailQueue

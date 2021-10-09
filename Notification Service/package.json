@@ -1,5 +1,5 @@
 {
-  "name": "notification-service",
+  "name": "auction-notification-service",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
@@ -9,8 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "serverless-offline": "^8.0.0",
-    "serverless-pseudo-parameters": "^2.6.0"
+  "devDependencies": {
+    "serverless-offline": "^8.2.0"
   }
 }
