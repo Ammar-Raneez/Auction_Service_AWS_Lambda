@@ -1,6 +1,7 @@
 service: auction-auction-service
 
 frameworkVersion: '2'
+variablesResolutionMode: 20210326
 
 plugins:
   - serverless-offline
@@ -25,7 +26,7 @@ resources:
 
 functions:
   createAuction:
-    name: createAuction-${opt:stage}
+    name: createAuction-${self:provider.stage}
     handler: src/handlers/createAuction.handler
     events:
       - http:
@@ -35,7 +36,7 @@ functions:
           cors: true
 
   getAuctions:
-    name: getAuctions-${opt:stage}
+    name: getAuctions-${self:provider.stage}
     handler: src/handlers/getAuctions.handler
     events:
       - http:
@@ -45,7 +46,7 @@ functions:
           cors: true
 
   getAuction:
-    name: getAuction-${opt:stage}
+    name: getAuction-${self:provider.stage}
     handler: src/handlers/getAuction.handler
     events:
       - http:
@@ -55,7 +56,7 @@ functions:
           cors: true
 
   placeBid:
-    name: placeBid-${opt:stage}
+    name: placeBid-${self:provider.stage}
     handler: src/handlers/placeBid.handler
     events:
       - http:
@@ -66,7 +67,7 @@ functions:
           cors: true
 
   processAuctions:
-    name: processAuctions-${opt:stage}
+    name: processAuctions-${self:provider.stage}
     handler: src/handlers/processAuctions.handler
 
     # schedule an event to run every minute
